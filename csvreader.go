@@ -4,6 +4,7 @@ import (
 	"encoding/csv"
 	"fmt"
 	"io"
+	"log"
 	"os"
 )
 
@@ -12,22 +13,19 @@ import (
 func main() {
 	file, err := os.Open("csvdata/csvtest.csv")
 	if err != nil {
-		// error is printable
-		// element passed are separated by space automatically
-		panic(err)
+		log.Fatalf("Error reading all lines: %v", err)
 	}
 	// automatically call Close() at the end of current method
 	defer file.Close()
-	//
 	reader := csv.NewReader(file)
 	// options are available at:
 	// http://golang.org/src/pkg/encoding/csv/reader.go?s=3213:3671#194
 	reader.Comma = ';'
-	lineCount := 1
+	lineCount := 0
+
 	for {
 		// read just one record, but we could ReadAll() as well
 		record, err := reader.Read()
-		// EOF is fitted into error
 		if err == io.EOF {
 			break
 		} else if err != nil {
