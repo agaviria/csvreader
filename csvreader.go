@@ -6,6 +6,7 @@ import (
 	"io"
 	"log"
 	"os"
+	//"strconv"
 )
 
 // documentation for csv is at http://golang.org/pkg/encoding/csv/
@@ -31,9 +32,11 @@ func main() {
 		} else if err != nil {
 			panic(err)
 		}
+
 		// record is an array of string so is directly printable
-		fmt.Println("Record", lineCount, "is", record, "and has", len(record), "fields")
-		// iterate on top of that skipping the 1st record
+		fmt.Println("Record:", lineCount, "generated an incoming transactional amount of", record[6])
+		fmt.Println("the account has an incoming declared profile of", record[5])
+		// iterate on top of that skiping the first record
 		for i := 0; i < len(record); i++ {
 			fmt.Println(" ", record[i])
 		}
