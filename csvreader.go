@@ -3,14 +3,13 @@ package main
 import (
 	"encoding/csv"
 	"fmt"
-	"io"
 	"log"
 	"os"
-	//"strconv"
+	"strconv"
 )
 
 // documentation for csv is at http://golang.org/pkg/encoding/csv/
-// TODO; could not find
+// TODO; refactor
 func main() {
 	file, err := os.Open("csvdata/csvtest.csv")
 	if err != nil {
@@ -22,25 +21,29 @@ func main() {
 	// options are available at:
 	// http://golang.org/src/pkg/encoding/csv/reader.go?s=3213:3671#194
 	reader.Comma = ';'
-	lineCount := 0
-
 	for {
 		// read just one record, but we could ReadAll() as well
 		record, err := reader.Read()
-		if err == io.EOF {
-			break
-		} else if err != nil {
-			panic(err)
+		if err != nil {
+			log.Print(err)
+			os.Exit(-1)
 		}
-
-		// record is an array of string so is directly printable
-		fmt.Println("Record:", lineCount, "generated an incoming transactional amount of", record[6])
-		fmt.Println("the account has an incoming declared profile of", record[5])
-		// iterate on top of that skiping the first record
-		for i := 0; i < len(record); i++ {
-			fmt.Println(" ", record[i])
+		var eia string = (record[5])
+		var cia string = (record[6])
+		var inc_diff float64
+		// for loop needs to be looked at!!!
+		for i := 0; i < len(record[i]); i++ {
+			estInc, err := strconv.ParseFloat(eia, 64)
+			if err == nil {
+				fmt.Printf("%+v\n", estInc)
+			}
+			actInc, err := strconv.ParseFloat(cia, 64)
+			if err == nil {
+				fmt.Printf("%+v\n", actInc)
+			}
+			inc_diff = (actInc - estInc)
+			fmt.Printf("Incoming amount difference: $%+v", inc_diff)
 		}
 		fmt.Println()
-		lineCount += 1
 	}
 }
