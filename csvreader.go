@@ -17,17 +17,18 @@ func main() {
 	}
 	// automatically call Close() at the end of current method
 	defer file.Close()
-	reader := csv.NewReader(file)
+
 	// options are available at:
 	// http://golang.org/src/pkg/encoding/csv/reader.go?s=3213:3671#194
-	reader.Comma = ';'
 	for {
-		// read just one record, but we could ReadAll() as well
+		reader := csv.NewReader(file)
+		reader.Comma = ';'
 		record, err := reader.Read()
 		if err != nil {
 			log.Print(err)
 			os.Exit(-1)
 		}
+
 		var eia string = (record[5])
 		var cia string = (record[6])
 		var inc_diff float64
