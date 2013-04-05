@@ -31,19 +31,20 @@ func main() {
 
 		var eia string = (record[5])
 		var cia string = (record[6])
+		var inc_percent = (record[7])
 		var inc_diff float64
 		// for loop needs to be looked at!!!
 		for i := 0; i < len(record[i]); i++ {
 			estInc, err := strconv.ParseFloat(eia, 64)
 			if err == nil {
-				fmt.Printf("%+v\n", estInc)
+				fmt.Printf("Estimated Incoming Amount: $%+v\n", estInc)
 			}
 			actInc, err := strconv.ParseFloat(cia, 64)
 			if err == nil {
-				fmt.Printf("%+v\n", actInc)
+				fmt.Printf("Actual Customer Activity: $%+v\n", actInc)
 			}
 			inc_diff = (actInc - estInc)
-			fmt.Printf("Incoming amount difference: $%+v", inc_diff)
+			fmt.Printf("The account exceeded the incoming amount by %+v same as $%+v", inc_percent, inc_diff)
 		}
 		fmt.Println()
 	}

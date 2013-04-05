@@ -1,12 +1,12 @@
-redalert
-========
+CSVRead
+=======
 << PROJECT SYNOPSIS >>
 
-[Documentation online](http://godoc.org/github.com/agaviria/csvread)
+[Documentation online](http://godoc.org/github.com/agaviria/csvreader)
 
 ## Installation
 
-	go get github.com/agaviria/csvread
+	go get github.com/agaviria/csvreader
 
 ## License
 
