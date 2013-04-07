@@ -8,7 +8,7 @@ _obj
 _test
 
 # action.io swp files
-*.go.swp
+*.csvreader.go.swp
 
 # Architecture specific extensions/prefixes
 *.[568vq]
