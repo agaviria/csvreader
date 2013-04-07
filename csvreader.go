@@ -3,37 +3,38 @@ package main
 import (
 	"encoding/csv"
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"strconv"
 )
 
-// documentation for csv is at http://golang.org/pkg/encoding/csv/
-// TODO; refactor
+const file = "csvdata/csvtest.csv"
+
 func main() {
-	file, err := os.Open("csvdata/csvtest.csv")
+	f, err := os.Open(file)
 	if err != nil {
 		log.Fatalf("Error reading all lines: %v", err)
 	}
-	// automatically call Close() at the end of current method
-	defer file.Close()
+	defer f.Close()
 
-	// options are available at:
-	// http://golang.org/src/pkg/encoding/csv/reader.go?s=3213:3671#194
+	reader := csv.NewReader(f)
+	reader.Comma = ';'
+
 	for {
-		reader := csv.NewReader(file)
-		reader.Comma = ';'
 		record, err := reader.Read()
-		if err != nil {
+		if err == io.EOF {
+			break
+		} else if err != nil {
 			log.Print(err)
 			os.Exit(-1)
 		}
-
+		// need to refactor variables
 		var eia string = (record[5])
 		var cia string = (record[6])
 		var inc_percent = (record[7])
 		var inc_diff float64
-		// for loop needs to be looked at!!!
+		
 		for i := 0; i < len(record[i]); i++ {
 			estInc, err := strconv.ParseFloat(eia, 64)
 			if err == nil {
