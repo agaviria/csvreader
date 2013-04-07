@@ -30,22 +30,24 @@ func main() {
 			os.Exit(-1)
 		}
 		// need to refactor variables
+		var num string = (record[2])
 		var eia string = (record[5])
 		var cia string = (record[6])
 		var inc_percent = (record[7])
 		var inc_diff float64
-		
+
 		for i := 0; i < len(record[i]); i++ {
 			estInc, err := strconv.ParseFloat(eia, 64)
+			actInc, err := strconv.ParseFloat(cia, 64)
+			inc_diff = (actInc - estInc)
+			if err == nil {
+				fmt.Println("=========================================================================\n")
+				fmt.Printf("Account: %+s exceeded the incoming amount by %+v same as $%+v\n", num, inc_percent, inc_diff)
+			}
 			if err == nil {
 				fmt.Printf("Estimated Incoming Amount: $%+v\n", estInc)
-			}
-			actInc, err := strconv.ParseFloat(cia, 64)
-			if err == nil {
 				fmt.Printf("Actual Customer Activity: $%+v\n", actInc)
 			}
-			inc_diff = (actInc - estInc)
-			fmt.Printf("The account exceeded the incoming amount by %+v same as $%+v", inc_percent, inc_diff)
 		}
 		fmt.Println()
 	}
