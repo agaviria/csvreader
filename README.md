@@ -1,6 +1,6 @@
 CSVRead
 =======
-<< PROJECT SYNOPSIS >>
+Read a CSV File and converts string fields to bytes.
 
 [Documentation online](http://godoc.org/github.com/agaviria/csvreader)
 

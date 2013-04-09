@@ -31,9 +31,11 @@ func main() {
 		}
 		// need to refactor variables
 		var num string = (record[2])
+		var name string = (record[3])
 		var eia string = (record[5])
 		var cia string = (record[6])
 		var inc_percent = (record[7])
+		var estIncTxn string = (record[8])
 		var inc_diff float64
 
 		for i := 0; i < len(record[i]); i++ {
@@ -41,13 +43,14 @@ func main() {
 			actInc, err := strconv.ParseFloat(cia, 64)
 			inc_diff = (actInc - estInc)
 			if err == nil {
-				fmt.Println("=========================================================================\n")
-				fmt.Printf("Account: %+s exceeded the incoming amount by %+v same as $%+v\n", num, inc_percent, inc_diff)
+				fmt.Println("==============================================================================\n")
+				fmt.Printf("Account: %+s - %+s exceeded the IncAmt by %+v same as $%+v\n", num, name, inc_percent, inc_diff)
+				fmt.Printf("over the monthly incoming amount of $%+v. Currently, the declared\n", actInc)
+				fmt.Printf("profile is established at $%+v with an expectancy of (%+v).\n", estInc, estIncTxn)
+			} else {
+				log.Fatalf("Error converting strings: +v", err)
 			}
-			if err == nil {
-				fmt.Printf("Estimated Incoming Amount: $%+v\n", estInc)
-				fmt.Printf("Actual Customer Activity: $%+v\n", actInc)
-			}
+
 		}
 		fmt.Println()
 	}
