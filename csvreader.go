@@ -11,47 +11,94 @@ import (
 
 const file = "csvdata/csvtest.csv"
 
+type Amounts struct {
+	EstimatedAmt float64
+	ActualAmt    float64
+	Percent      string
+	EstimatedTxn string
+}
+
+type Account struct {
+	Num  string
+	Name string
+	In   *Amounts
+	Out  *Amounts
+}
+
+const reportSeparator = "=============================================\n"
+
+func printAccountMonth(a *Account) error {
+	fmt.Printf(
+		reportSeparator,
+	)
+	fmt.Printf(
+		"Account: %+s - %+s exceeded the incoming amount by $%+v, the same as $%+v\n", a.Num, a.Name, a.In.Percent, a.In.ActualAmt, a.In.EstimatedAmt,
+	)
+	fmt.Printf(
+		"over the monthly incoming amount of $%+v, Currently, the declared\n", a.In.ActualAmt,
+	)
+	fmt.Printf(
+		"profile is established at $%+v with an expectancy of (%+v).\n", a.In.EstimatedAmt, a.In.EstimatedTxn,
+	)
+	return nil
+}
+
+func readAmounts(r []string) (a *Amounts, err error) {
+	a = new(Amounts)
+	est := r[0]
+	a.EstimatedAmt, err = strconv.ParseFloat(est, 64)
+	if err != nil {
+		return nil, fmt.Errorf("Error converting string: +v", err)
+	}
+	act := r[1]
+	a.ActualAmt, err = strconv.ParseFloat(act, 64)
+	if err != nil {
+		return nil, fmt.Errorf("Error converting string: +v", err)
+	}
+	a.Percent = r[2]
+	a.EstimatedTxn = r[3]
+	return a, nil
+}
+
+func accountMonth(record []string) error {
+	var err error
+	var a Account
+	a.Num = record[2]
+	a.Num = record[3]
+	a.In, err = readAmounts(record[5 : 5+6])
+	if err != nil {
+		return err
+	}
+	a.Out, err = readAmounts(record[11 : 11+6])
+	if err != nil {
+		return err
+	}
+	err = printAccountMonth(&a)
+	return err
+}
+
 func main() {
 	f, err := os.Open(file)
 	if err != nil {
-		log.Fatalf("Error reading all lines: %v", err)
+		log.Fatalf("Error opening file: %v", err)
 	}
 	defer f.Close()
 
-	reader := csv.NewReader(f)
-	reader.Comma = ';'
+	rdr := csv.NewReader(f)
+	rdr.Comma = ';'
 
 	for {
-		record, err := reader.Read()
-		if err == io.EOF {
-			break
-		} else if err != nil {
-			log.Print(err)
-			os.Exit(-1)
-		}
-		// need to refactor variables
-		var num string = (record[2])
-		var name string = (record[3])
-		var eia string = (record[5])
-		var cia string = (record[6])
-		var inc_percent = (record[7])
-		var estIncTxn string = (record[8])
-		var inc_diff float64
-
-		for i := 0; i < len(record[i]); i++ {
-			estInc, err := strconv.ParseFloat(eia, 64)
-			actInc, err := strconv.ParseFloat(cia, 64)
-			inc_diff = (actInc - estInc)
-			if err == nil {
-				fmt.Println("==============================================================================\n")
-				fmt.Printf("Account: %+s - %+s exceeded the IncAmt by %+v same as $%+v\n", num, name, inc_percent, inc_diff)
-				fmt.Printf("over the monthly incoming amount of $%+v. Currently, the declared\n", actInc)
-				fmt.Printf("profile is established at $%+v with an expectancy of (%+v).\n", estInc, estIncTxn)
-			} else {
-				log.Fatalf("Error converting strings: +v", err)
+		record, err := rdr.Read()
+		if err != nil {
+			if err == io.EOF {
+				break
 			}
-
+			log.Fatal(err)
 		}
-		fmt.Println()
+		err = accountMonth(record)
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Printf(reportSeparator)
 	}
 }
