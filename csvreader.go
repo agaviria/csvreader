@@ -21,24 +21,31 @@ type Amounts struct {
 type Account struct {
 	Num  string
 	Name string
+	Risk string
 	In   *Amounts
 	Out  *Amounts
 }
 
-const reportSeparator = "=============================================\n"
+const reportSeparator = "====================================================================\n"
 
-func printAccountMonth(a *Account) error {
+func printIncActivity(a *Account) error {
 	fmt.Printf(
 		reportSeparator,
 	)
 	fmt.Printf(
-		"Account: %+s - %+s exceeded the incoming amount by $%+v, the same as $%+v\n", a.Num, a.Name, a.In.Percent, a.In.ActualAmt, a.In.EstimatedAmt,
+		"Account: %+s / %+s\n", a.Num, a.Name,
 	)
 	fmt.Printf(
-		"over the monthly incoming amount of $%+v, Currently, the declared\n", a.In.ActualAmt,
+		"Risk: %+s\n\n", a.Risk,
 	)
 	fmt.Printf(
-		"profile is established at $%+v with an expectancy of (%+v).\n", a.In.EstimatedAmt, a.In.EstimatedTxn,
+		"The account exceeded the incoming profile by $%+v,\n", a.In.Percent,
+	)
+	fmt.Printf(
+		"the same as $%+v over the monthly incoming amount of $%+v.\n", a.In.ActualAmt-a.In.EstimatedAmt, a.In.ActualAmt,
+	)
+	fmt.Printf(
+		"Current profile is established at $%+v with an expectancy of (%+v).\n", a.In.EstimatedAmt, a.In.EstimatedTxn,
 	)
 	return nil
 }
@@ -64,7 +71,8 @@ func accountMonth(record []string) error {
 	var err error
 	var a Account
 	a.Num = record[2]
-	a.Num = record[3]
+	a.Name = record[3]
+	a.Risk = record[0]
 	a.In, err = readAmounts(record[5 : 5+6])
 	if err != nil {
 		return err
@@ -73,7 +81,7 @@ func accountMonth(record []string) error {
 	if err != nil {
 		return err
 	}
-	err = printAccountMonth(&a)
+	err = printIncActivity(&a)
 	return err
 }
 
