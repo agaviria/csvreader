@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"time"
 )
 
 const file = "csvdata/csvtest.csv"
@@ -29,24 +30,18 @@ type Account struct {
 const reportSeparator = "====================================================================\n"
 
 func printIncActivity(a *Account) error {
-	fmt.Printf(
-		reportSeparator,
-	)
-	fmt.Printf(
-		"Account: %+s / %+s\n", a.Num, a.Name,
-	)
-	fmt.Printf(
-		"Risk: %+s\n\n", a.Risk,
-	)
-	fmt.Printf(
-		"The account exceeded the incoming profile by $%+v,\n", a.In.Percent,
-	)
-	fmt.Printf(
-		"the same as $%+v over the monthly incoming amount of $%+v.\n", a.In.ActualAmt-a.In.EstimatedAmt, a.In.ActualAmt,
-	)
-	fmt.Printf(
-		"Current profile is established at $%+v with an expectancy of (%+v).\n", a.In.EstimatedAmt, a.In.EstimatedTxn,
-	)
+	p := fmt.Printf
+	p(reportSeparator)
+	// Next 3 Lines set up date parsing of stdLongMonth (m-1)
+	y, m, _ := time.Now().Date()
+	t := time.Date(y, m-1, 1, 0, 0, 0, 0, time.UTC)
+	t = time.Date(y, m-1, 1, 0, 0, 0, 0, time.UTC)
+	p("Account: %+s / %+s\n", a.Num, a.Name)
+	p("Risk: %+s / ", a.Risk)
+	p("Exception Date: %+v", t.Format("January, 2006\n"))
+	p("\nThe account exceeded the incoming profile by $%+v,\n", a.In.Percent)
+	p("the same as $%+v over the monthly incoming amount of $%+v.\n", a.In.ActualAmt-a.In.EstimatedAmt, a.In.ActualAmt)
+	p("Current profile is established at $%+v with an expectancy of (%+v).\n", a.In.EstimatedAmt, a.In.EstimatedTxn)
 	return nil
 }
 
