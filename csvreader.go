@@ -36,12 +36,18 @@ func printIncActivity(a *Account) error {
 	y, m, _ := time.Now().Date()
 	t := time.Date(y, m-1, 1, 0, 0, 0, 0, time.UTC)
 	t = time.Date(y, m-1, 1, 0, 0, 0, 0, time.UTC)
+	// ======================================================
 	p("Account: %+s / %+s\n", a.Num, a.Name)
 	p("Risk: %+s / ", a.Risk)
 	p("Exception Date: %+v", t.Format("January, 2006\n"))
-	p("\nThe account exceeded the incoming profile by $%+v,\n", a.In.Percent)
+	p("\nThe account exceeded the incoming profile by %+v,\n", a.In.Percent)
 	p("the same as $%+v over the monthly incoming amount of $%+v.\n", a.In.ActualAmt-a.In.EstimatedAmt, a.In.ActualAmt)
 	p("Current profile is established at $%+v with an expectancy of (%+v).\n", a.In.EstimatedAmt, a.In.EstimatedTxn)
+
+	p("\nThe account exceeded the outgoing profile by %+v,\n", a.Out.Percent)
+	p("the same as $%+v over the monthly outgoing amount of $%+v.\n", a.Out.ActualAmt-a.Out.EstimatedAmt, a.Out.ActualAmt)
+	p("Current profile is established at $%+v with an expectancy of (%+v).\n", a.Out.EstimatedAmt, a.Out.EstimatedTxn)
+	return nil
 	return nil
 }
 
