@@ -29,6 +29,7 @@ type Account struct {
 
 const reportSeparator = "====================================================================\n"
 
+// Formats time.Date to dd/YYYY one month behind time.now() 
 func DateFormat() string {
 	const format = "01/2006"
 	year, month, _ := time.Now().Date()
@@ -37,23 +38,23 @@ func DateFormat() string {
 	return t.Format(format)
 }
 
+// Template for alert: includes header, incoming and outgoing
 func printIncActivity(a *Account) error {
 	p := fmt.Printf
 	p(reportSeparator)
-	// ======================================================
 	p("Account: %+s / %+s\n", a.Num, a.Name)
 	p("Risk: %+s / ", a.Risk)
 	p("Exception Date: %+v\n", DateFormat())
 	p("\nThe account exceeded the incoming profile by %+v,\n", a.In.Percent)
 	p("the same as $%6.2f over the monthly incoming amount of $%6.2f.\n", a.In.ActualAmt-a.In.EstimatedAmt, a.In.ActualAmt)
 	p("Current profile is established at $%+v with an expectancy of (%+v).\n", a.In.EstimatedAmt, a.In.EstimatedTxn)
-
 	p("\nThe account exceeded the outgoing profile by %+v,\n", a.Out.Percent)
 	p("the same as $%6.2f over the monthly outgoing amount of $%6.2f\n", a.Out.ActualAmt-a.Out.EstimatedAmt, a.Out.ActualAmt)
 	p("Current profile is established at $%+v with an expectancy of (%+v).\n", a.Out.EstimatedAmt, a.Out.EstimatedTxn)
 	return nil
 }
 
+// Reads and parses all value amounts from file
 func readAmounts(r []string) (a *Amounts, err error) {
 	a = new(Amounts)
 	est := r[0]
@@ -71,6 +72,7 @@ func readAmounts(r []string) (a *Amounts, err error) {
 	return a, nil
 }
 
+// Slice of accounts alerted in a single month
 func accountMonth(record []string) error {
 	var err error
 	var a Account
