@@ -9,6 +9,9 @@ _test
 
 # action.io swp files
 *.csvreader.go.swp
+*.csvreader
+*1
+*@
 
 # Architecture specific extensions/prefixes
 *.[568vq]
