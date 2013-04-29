@@ -1,0 +1,87 @@
+package main
+
+import (
+	"encoding/csv"
+	"fmt"
+	"io"
+	"log"
+	"os"
+	"strconv"
+)
+
+type AcctAlerted struct {
+	acctName   string
+	acctNum    uint8 //int64
+	eia        uint8 //float64
+	cia        uint8 //float64
+	incPercent uint8 //string
+}
+
+const file = "csvdata/csvtest.csv"
+
+func main() {
+	f, err := os.Open(file)
+	if err != nil {
+		log.Fatalf("Error reading all lines: %v", err)
+	}
+	defer f.Close()
+
+	reader := csv.NewReader(f)
+	reader.Comma = ';'
+
+	for {
+		record, err := reader.Read()
+		if err == io.EOF {
+			break
+		} else if err != nil {
+			log.Print(err)
+			os.Exit(-1)
+		}
+
+		acctAlerted := make([]AcctAlerted, len(record))
+
+		for i, records := range record {
+			acctNum, err := strconv.ParseInt(records[2], 2, 64)
+			e, err := strconv.ParseFloat(records[5], 64)
+			a, err := strconv.ParseFloat(records[6], 64)
+			if err == nil {
+				fields := AcctAlerted{
+					acctNum:    records[2],
+					acctName:   records[3],
+					eia:        e,
+					cia:        a,
+					incPercent: records[7],
+				}
+				acctAlerted[i-1] = fields
+			} else {
+				fmt.Println(err)
+			}
+		}
+
+		fmt.Println(acctAlerted)
+	}
+}
+
+// var num string = (record[2])
+// var eia string = (record[5])
+// var cia string = (record[6])
+// var inc_percent = (record[7])
+
+// 		var inc_diff float64
+// 		for i := 0; i < len(record[i]); i++ {
+// 			estInc, err := strconv.ParseFloat(eia, 64)
+// 			actInc, err := strconv.ParseFloat(cia, 64)
+// 			inc_diff = (actInc - estInc)
+// 			if err == nil {
+// 				fmt.Println("=========================================================================\n")
+// 				fmt.Printf("Account: %#T exceeded the incoming amount by %+v same as $%+v\n", num, inc_percent, inc_diff)
+// 			}
+// 			if err == nil {
+// 				fmt.Printf("Estimated Incoming Amount: $%+v\n", estInc)
+// 				fmt.Printf("Actual Customer Activity: $%+v\n", actInc)
+// 			}
+// 		}
+// 		fmt.Println()
+// 	}
+// 	p:TComment
+// }
