@@ -1,118 +1,53 @@
 package main
 
 import (
-	"encoding/csv"
+	"flag"
 	"fmt"
-	"io"
-	"log"
 	"os"
-	"strconv"
-	"time"
+	"text/template"
 )
 
-const file = "csvdata/csvtest.csv"
+var versionStr = "0.1.0"
 
-type Amounts struct {
-	EstimatedAmt float64
-	ActualAmt    float64
-	Percent      string
-	EstimatedTxn string
+func showUsage() {
+	fmt.Fprintf(os.Stderr, "Usage: %s -f=<csvpath> <Options>\n\n", os.Args[0])
+	fmt.Fprintf(os.Stderr, "Flags:\n")
+	flag.PrintDefaults()
+	fmt.Fprintf(os.Stderr, "\n\n")
 }
 
-type Account struct {
-	Num  string
-	Name string
-	Risk string
-	In   *Amounts
-	Out  *Amounts
-}
+var (
+	helpFlag    = flag.Bool("help", false, "Display Help Menu")
+	outFlag     = flag.Bool("o", false, "Display Output in Terminal")
+	mdFlag      = flag.Bool("m", false, "Generate Markdown File (.md)")
+	bundleFlag  = flag.Bool("b", false, "Bundle ALL rows found in CSV")
+	versionFlag = flag.Bool("v", false, "Application Version")
+	acctFlag    = flag.String("acct", "", "Search By Account Number")
+	fileFlag    = flag.String("f", "", "CSV Path: /csvdata/csvtest.csv")
+	outPathFlag = flag.String("fo", "out", "Directory Path For Generated Markdown files")
+)
 
-const reportSeparator = "====================================================================\n"
+var tmpl *template.Template
 
-// Formats time.Date to dd/YYYY one month behind time.now() 
-func DateFormat() string {
-	const format = "01/2006"
-	year, month, _ := time.Now().Date()
-	t := time.Date(year, month-1, 1, 0, 0, 0, 0, time.UTC)
-	t = time.Date(year, month-1, 1, 0, 0, 0, 0, time.UTC)
-	return t.Format(format)
-}
-
-// Template for alert: includes header, incoming and outgoing
-func printIncActivity(a *Account) error {
-	p := fmt.Printf
-	p(reportSeparator)
-	p("Account: %+s / %+s\n", a.Num, a.Name)
-	p("Risk: %+s / ", a.Risk)
-	p("Exception Date: %+v\n", DateFormat())
-	p("\nThe account exceeded the incoming profile by %+v,\n", a.In.Percent)
-	p("the same as $%6.2f over the monthly incoming amount of $%6.2f.\n", a.In.ActualAmt-a.In.EstimatedAmt, a.In.ActualAmt)
-	p("Current profile is established at $%+v with an expectancy of (%+v).\n", a.In.EstimatedAmt, a.In.EstimatedTxn)
-	p("\nThe account exceeded the outgoing profile by %+v,\n", a.Out.Percent)
-	p("the same as $%6.2f over the monthly outgoing amount of $%6.2f\n", a.Out.ActualAmt-a.Out.EstimatedAmt, a.Out.ActualAmt)
-	p("Current profile is established at $%+v with an expectancy of (%+v).\n", a.Out.EstimatedAmt, a.Out.EstimatedTxn)
-	return nil
-}
-
-// Reads and parses all value amounts from file
-func readAmounts(r []string) (a *Amounts, err error) {
-	a = new(Amounts)
-	est := r[0]
-	a.EstimatedAmt, err = strconv.ParseFloat(est, 64)
-	if err != nil {
-		return nil, fmt.Errorf("Error converting string: +v", err)
-	}
-	act := r[1]
-	a.ActualAmt, err = strconv.ParseFloat(act, 64)
-	if err != nil {
-		return nil, fmt.Errorf("Error converting string: +v", err)
-	}
-	a.Percent = r[2]
-	a.EstimatedTxn = r[3]
-	return a, nil
-}
-
-// Slice of accounts alerted in a single month
-func accountMonth(record []string) error {
+func init() {
 	var err error
-	var a Account
-	a.Num = record[2]
-	a.Name = record[3]
-	a.Risk = record[0]
-	a.In, err = readAmounts(record[5 : 5+6])
+	tmpl, err = template.ParseFiles("alert.tmpl")
 	if err != nil {
-		return err
+		panic(err)
 	}
-	a.Out, err = readAmounts(record[11 : 11+6])
-	if err != nil {
-		return err
-	}
-	err = printIncActivity(&a)
-	return err
 }
 
 func main() {
-	f, err := os.Open(file)
-	if err != nil {
-		log.Fatalf("Error opening file: %v", err)
+	flag.Usage = showUsage
+	flag.Parse()
+	if *helpFlag || *fileFlag == "" {
+		flag.Usage()
+		os.Exit(0)
 	}
-	defer f.Close()
-
-	rdr := csv.NewReader(f)
-	rdr.Comma = ';'
-
-	for {
-		record, err := rdr.Read()
-		if err != nil {
-			if err == io.EOF {
-				break
-			}
-			log.Fatal(err)
-		}
-		err = accountMonth(record)
-		if err != nil {
-			log.Fatal(err)
-		}
-		fmt.Printf(reportSeparator)
+	if *versionFlag || *fileFlag == "" {
+		fmt.Printf("Version: %s\n", versionStr)
+		flag.Usage()
+		os.Exit(0)
 	}
+	read(*fileFlag)
 }

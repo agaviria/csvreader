@@ -1,0 +1,14 @@
+Account: {{.account.Num}} / {{.account.Name}}
+Risk: {{.account.Risk}} / Exception Date: {{.date.Format "01/2006"}}
+
+{{if .account.In.IsPrintable}}
+The account exceeded the incoming profile by {{.account.In.Percent}},
+the same as {{printf "$%6.2f" .account.In.ClientActualAmt}} over the monthly incoming amount of {{printf "$%6.2f" .account.In.ActualAmt}}.
+Current profile is established at {{printf "$%+v" .account.In.EstimatedAmt}} with an expectancy of {{printf "(%+v)" .account.In.EstimatedTxn}}.
+{{end}}
+
+{{if .account.Out.IsPrintable}}
+The account exceeded the outgoing profile by {{printf "%+v" .account.Out.Percent}},
+the same as {{printf "$%6.2f" .account.Out.ClientActualAmt}} over the monthly outgoing amount of {{printf "$%6.2f" .account.Out.ActualAmt}}
+Current profile is established at {{printf "$%+v" .account.Out.EstimatedAmt}} with an expectancy of {{printf "(%+v)" .account.Out.EstimatedTxn}}.
+{{end}}
