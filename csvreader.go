@@ -7,13 +7,19 @@ import (
 	"text/template"
 )
 
+const usageTmpl = `Usage: csvreader -f=<csvpath> [Options]
+
+Basset Reporter manages BSA/AML profile alerts uniformly.
+Use "-help" for more information about flag options.
+
+`
 var versionStr = "0.1.0"
 
 func showUsage() {
-	fmt.Fprintf(os.Stderr, "Usage: %s -f=<csvpath> <Options>\n\n", os.Args[0])
+	fmt.Fprintf(os.Stderr, usageTmpl)	
 	fmt.Fprintf(os.Stderr, "Flags:\n")
 	flag.PrintDefaults()
-	fmt.Fprintf(os.Stderr, "\n\n")
+	os.Exit(2)
 }
 
 var (
@@ -40,13 +46,18 @@ func init() {
 func main() {
 	flag.Usage = showUsage
 	flag.Parse()
-	if *helpFlag || *fileFlag == "" {
+	if *helpFlag {
 		flag.Usage()
 		os.Exit(0)
 	}
+<<<<<<< HEAD
 	if *versionFlag || *fileFlag == "" {
 		fmt.Printf("Version: %s\n\n", versionStr)
 		flag.Usage()
+=======
+	if *versionFlag {
+		fmt.Printf("Version: %s\n", versionStr)
+>>>>>>> b2d4a7f63a8c2a0834d870596fd32a178f10a02e
 		os.Exit(0)
 	}
 	read(*fileFlag)
