@@ -45,7 +45,7 @@ func main() {
 		os.Exit(0)
 	}
 	if *versionFlag || *fileFlag == "" {
-		fmt.Printf("Version: %s\n", versionStr)
+		fmt.Printf("Version: %s\n\n", versionStr)
 		flag.Usage()
 		os.Exit(0)
 	}

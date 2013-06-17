@@ -95,6 +95,14 @@ func accountMonth(record []string) (*Account, error) {
 	a.Num = record[2]
 	a.Name = record[3]
 	a.Risk = record[0]
+	// replaces data value with risk representation
+	if a.Risk == "10" {
+		a.Risk = "Low"
+	} else if a.Risk == "20" {
+		a.Risk = "Moderate"
+	} else {
+		a.Risk = "High"
+	}
 	return a, nil
 }
 
