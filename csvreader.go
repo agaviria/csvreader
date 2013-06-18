@@ -13,7 +13,7 @@ Basset Reporter manages BSA/AML profile alerts uniformly.
 Use "-help" for more information about flag options.
 
 `
-var versionStr = "0.1.0"
+var versionStr = "0.2"
 
 func showUsage() {
 	fmt.Fprintf(os.Stderr, usageTmpl)	
