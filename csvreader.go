@@ -50,14 +50,9 @@ func main() {
 		flag.Usage()
 		os.Exit(0)
 	}
-<<<<<<< HEAD
 	if *versionFlag || *fileFlag == "" {
 		fmt.Printf("Version: %s\n\n", versionStr)
 		flag.Usage()
-=======
-	if *versionFlag {
-		fmt.Printf("Version: %s\n", versionStr)
->>>>>>> b2d4a7f63a8c2a0834d870596fd32a178f10a02e
 		os.Exit(0)
 	}
 	read(*fileFlag)
