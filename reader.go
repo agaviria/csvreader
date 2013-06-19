@@ -80,7 +80,7 @@ func printMthlyActivity(w io.Writer, a *Account) error {
 	return nil
 }
 
-// Slice of accounts alerted in a single month retrieved 
+// Slice of accounts alerted in a single month retrieved
 func accountMonth(record []string) (*Account, error) {
 	var err error
 	a := new(Account)

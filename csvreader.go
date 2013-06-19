@@ -16,7 +16,7 @@ Use "-help" for more information about flag options.
 var versionStr = "0.2"
 
 func showUsage() {
-	fmt.Fprintf(os.Stderr, usageTmpl)	
+	fmt.Fprintf(os.Stderr, usageTmpl)
 	fmt.Fprintf(os.Stderr, "Flags:\n")
 	flag.PrintDefaults()
 	os.Exit(2)
