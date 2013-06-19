@@ -9,7 +9,7 @@ _test
 
 # action.io swp files
 *.csvreader.go.swp
-*.csvreader
+*csvreader
 *1
 *@
 
