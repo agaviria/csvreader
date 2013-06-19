@@ -13,10 +13,10 @@ Basset Reporter manages BSA/AML profile alerts uniformly.
 Use "-help" for more information about flag options.
 
 `
-var versionStr = "0.1.0"
+var versionStr = "0.2"
 
 func showUsage() {
-	fmt.Fprintf(os.Stderr, usageTmpl)	
+	fmt.Fprintf(os.Stderr, usageTmpl)
 	fmt.Fprintf(os.Stderr, "Flags:\n")
 	flag.PrintDefaults()
 	os.Exit(2)
@@ -50,14 +50,9 @@ func main() {
 		flag.Usage()
 		os.Exit(0)
 	}
-<<<<<<< HEAD
 	if *versionFlag || *fileFlag == "" {
 		fmt.Printf("Version: %s\n\n", versionStr)
 		flag.Usage()
-=======
-	if *versionFlag {
-		fmt.Printf("Version: %s\n", versionStr)
->>>>>>> b2d4a7f63a8c2a0834d870596fd32a178f10a02e
 		os.Exit(0)
 	}
 	read(*fileFlag)
