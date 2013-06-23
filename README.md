@@ -1,6 +1,6 @@
 CSVRead
 =======
-Read a CSV File and converts string fields to bytes.
+Reads a CSV file, parses rows in memory, creates a markdown template
 
 [Documentation online](http://godoc.org/github.com/agaviria/csvreader)
 

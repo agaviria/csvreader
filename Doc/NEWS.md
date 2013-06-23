@@ -14,6 +14,6 @@
 ### 2013-06-17 Release 0.01b
 + Created a markdown template
 + Included the flags package and added commands
-	+ build, output, markdown, bundle and build
+	+ help, build, output, markdown 
 + Convert risk data structure to low, moderate or high
-+ Added help menu
+

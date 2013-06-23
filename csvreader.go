@@ -9,10 +9,11 @@ import (
 
 const usageTmpl = `Usage: csvreader -f=<csvpath> [Options]
 
-Basset Reporter manages BSA/AML profile alerts uniformly.
+Basset Reporter manages transaction profile alerts uniformly.
 Use "-help" for more information about flag options.
 
 `
+
 var versionStr = "0.2"
 
 func showUsage() {

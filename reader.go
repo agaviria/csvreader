@@ -41,7 +41,7 @@ func (a *Amounts) IsPrintable() bool {
 	if *bundleFlag {
 		return true
 	}
-	// Removes false-positive alerts from printable template
+	// Removes false-positive alerts
 	// e.g. -275%
 	if strings.Count(a.Percent, "-") != 0 {
 		return false
