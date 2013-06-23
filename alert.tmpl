@@ -4,13 +4,17 @@
 ------------------------------
 
 {{if .Account.In.IsValidAlert}}
-The account exceeded the incoming profile by __{{.Account.In.Percent}}__,
-the same as __{{printf "$%6.0f" .Account.In.ClientActualAmount}}__ over the monthly incoming amount of {{printf "$%6.0f" .Account.In.ActualAmount}}.
-Current profile is established at {{printf "$%+v" .Account.In.EstimatedAmount}} with an expectancy of {{printf "(%+v)" .Account.In.EstimatedTxn}}.
+{{with .Account.In}}
+The account exceeded the incoming profile by __{{.Percent}}__,
+the same as __{{printf "$%6.0f" .ClientActualAmount}}__ over the monthly incoming amount of {{printf "$%6.0f" .ActualAmount}}.
+Current profile is established at {{printf "$%+v" .EstimatedAmount}} with an expectancy of {{printf "(%+v)" .EstimatedTxn}}.
+{{end}}
 {{end}}
 
 {{if .Account.Out.IsValidAlert}}
-The account exceeded the outgoing profile by __{{.Account.Out.Percent}}__,
-the same as __{{printf "$%6.0f" .Account.Out.ClientActualAmount}}__ over the monthly outgoing amount of {{printf "$%6.0f" .Account.Out.ActualAmount}}
-Current profile is established at {{printf "$%+v" .Account.Out.EstimatedAmount}} with an expectancy of {{printf "(%+v)" .Account.Out.EstimatedTxn}}.
+{{with .Account.Out}}
+The account exceeded the outgoing profile by __{{.Percent}}__,
+the same as __{{printf "$%6.0f" .ClientActualAmount}}__ over the monthly outgoing amount of {{printf "$%6.0f" .ActualAmount}}
+Current profile is established at {{printf "$%+v" .EstimatedAmount}} with an expectancy of {{printf "(%+v)" .EstimatedTxn}}.
+{{end}}
 {{end}}

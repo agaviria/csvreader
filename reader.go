@@ -75,9 +75,6 @@ func readAmounts(r []string) (a *Amounts, err error) {
 }
 
 func printMonthlyActivity(w io.Writer, a *Account) error {
-	//++ TODO: map interface{} interface [] ??
-	// var context = map[interface{}]interface{}{"date": time.Now(), "account": a}
-
 	var data = &alertTemplateData{
 		Date:    time.Now(),
 		Account: a,
@@ -135,8 +132,10 @@ func read(filename string) {
 	csvReader.Comma = ';'
 	err = os.MkdirAll(*outPathFlag, 0700)
 	if err != nil {
-		panic(err)
+		log.Fatalf("Error creating output directory %s: %s", *outPathFlag, err)
 	}
+
+	// loop over records
 	for {
 		record, err := csvReader.Read()
 		if err != nil {
