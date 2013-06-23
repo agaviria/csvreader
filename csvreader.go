@@ -23,9 +23,8 @@ func showUsage() {
 }
 
 var (
-	helpFlag = flag.Bool("help", false, "Display Help Menu")
-	outFlag  = flag.Bool("o", false, "Display Output in Terminal")
-	// bundleFlag  = flag.Bool("b", false, "Bundle ALL rows found in CSV")
+	helpFlag    = flag.Bool("help", false, "Display Help Menu")
+	outFlag     = flag.Bool("o", false, "Display Output in Terminal")
 	versionFlag = flag.Bool("v", false, "Application Version")
 	acctFlag    = flag.String("acct", "", "Search By Account Number")
 	fileFlag    = flag.String("f", "", "CSV Path: /csvdata/csvtest.csv")
