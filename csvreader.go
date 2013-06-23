@@ -13,47 +13,50 @@ Basset Reporter manages BSA/AML profile alerts uniformly.
 Use "-help" for more information about flag options.
 
 `
+
 var versionStr = "0.2"
 
 func showUsage() {
 	fmt.Fprintf(os.Stderr, usageTmpl)
 	fmt.Fprintf(os.Stderr, "Flags:\n")
 	flag.PrintDefaults()
-	os.Exit(2)
 }
 
 var (
 	helpFlag    = flag.Bool("help", false, "Display Help Menu")
 	outFlag     = flag.Bool("o", false, "Display Output in Terminal")
-	mdFlag      = flag.Bool("m", false, "Generate Markdown File (.md)")
-	bundleFlag  = flag.Bool("b", false, "Bundle ALL rows found in CSV")
 	versionFlag = flag.Bool("v", false, "Application Version")
 	acctFlag    = flag.String("acct", "", "Search By Account Number")
 	fileFlag    = flag.String("f", "", "CSV Path: /csvdata/csvtest.csv")
 	outPathFlag = flag.String("fo", "out", "Directory Path For Generated Markdown files")
 )
 
-var tmpl *template.Template
+var tmplAlert *template.Template
 
-func init() {
+func main() {
+	// setup alert template
 	var err error
-	tmpl, err = template.ParseFiles("alert.tmpl")
+	tmplAlert, err = template.ParseFiles("alert.tmpl")
 	if err != nil {
 		panic(err)
 	}
-}
 
-func main() {
-	flag.Usage = showUsage
+	// parse flags
 	flag.Parse()
+
+	// show help if requested
 	if *helpFlag {
-		flag.Usage()
+		showUsage()
 		os.Exit(0)
 	}
-	if *versionFlag || *fileFlag == "" {
+
+	// show version if requested
+	if *versionFlag {
 		fmt.Printf("Version: %s\n\n", versionStr)
-		flag.Usage()
+		showUsage()
 		os.Exit(0)
 	}
+
+	// do actual work
 	read(*fileFlag)
 }
