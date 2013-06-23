@@ -1,16 +1,16 @@
-#### Account: {{.account.Num}} / {{.account.Name}}
-#### Risk: {{.account.Risk}} / Exception Date: {{.date.Format "01/2006"}}
+#### Account: {{.Account.Num}} / {{.Account.Name}}
+#### Risk: {{.Account.Risk}} / Exception Date: {{.Date.Format "01/2006"}}
 
 ------------------------------
 
-{{if .account.In.IsPrintable}}
-The account exceeded the incoming profile by __{{.account.In.Percent}}__,
-the same as __{{printf "$%6.2f" .account.In.ClientActualAmt}}__ over the monthly incoming amount of {{printf "$%6.2f" .account.In.ActualAmt}}.
-Current profile is established at {{printf "$%+v" .account.In.EstimatedAmt}} with an expectancy of {{printf "(%+v)" .account.In.EstimatedTxn}}.
+{{if .Account.In.IsValidAlert}}
+The account exceeded the incoming profile by __{{.Account.In.Percent}}__,
+the same as __{{printf "$%6.0f" .Account.In.ClientActualAmount}}__ over the monthly incoming amount of {{printf "$%6.0f" .Account.In.ActualAmount}}.
+Current profile is established at {{printf "$%+v" .Account.In.EstimatedAmount}} with an expectancy of {{printf "(%+v)" .Account.In.EstimatedTxn}}.
 {{end}}
 
-{{if .account.Out.IsPrintable}}
-The account exceeded the outgoing profile by __{{.account.Out.Percent}}__,
-the same as __{{printf "$%6.2f" .account.Out.ClientActualAmt}}__ over the monthly outgoing amount of {{printf "$%6.2f" .account.Out.ActualAmt}}
-Current profile is established at {{printf "$%+v" .account.Out.EstimatedAmt}} with an expectancy of {{printf "(%+v)" .account.Out.EstimatedTxn}}.
+{{if .Account.Out.IsValidAlert}}
+The account exceeded the outgoing profile by __{{.Account.Out.Percent}}__,
+the same as __{{printf "$%6.0f" .Account.Out.ClientActualAmount}}__ over the monthly outgoing amount of {{printf "$%6.0f" .Account.Out.ActualAmount}}
+Current profile is established at {{printf "$%+v" .Account.Out.EstimatedAmount}} with an expectancy of {{printf "(%+v)" .Account.Out.EstimatedTxn}}.
 {{end}}
