@@ -40,11 +40,6 @@ func (a *Account) IsValidAlert() bool {
 	return false
 }
 
-func (a *Amounts) IsPrintable() bool {
-	if *bundleFlag {
-		return true
-	}
-	// Removes false-positive alerts
 func (a *Amounts) IsValidAlert() bool {
 	// Removes false-positive alerts from printable template
 	// e.g. -275%
