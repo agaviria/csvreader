@@ -6,12 +6,15 @@
 # Folders
 _obj
 _test
+_out
 
 # action.io swp files
 *.csvreader.go.swp
-*.csvreader
 *1
 *@
+
+# Binaries
+./csvreader
 
 # Architecture specific extensions/prefixes
 *.[568vq]
@@ -26,5 +29,3 @@ _cgo_export.*
 _testmain.go
 
 *.exe
-
-./csvreader

@@ -14,6 +14,10 @@
 ### 2013-06-17 Release 0.01b
 + Created a markdown template
 + Included the flags package and added commands
-	+ build, output, markdown, bundle and build
+	+ Query by account: -acct
+	+ Generate Markdown Template: -md
+	+ Build in file out: -fo
+	+ Help Menu: -help
 + Convert risk data structure to low, moderate or high
++ Convert percentage construct of (***) to > 1000%
 + Added help menu
