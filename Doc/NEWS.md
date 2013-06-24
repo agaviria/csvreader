@@ -16,4 +16,10 @@
 + Included the flags package and added commands
 	+ help, build, output, markdown 
 + Convert risk data structure to low, moderate or high
-
+	+ Query by account: -acct
+	+ Generate Markdown Template: -md
+	+ Build in file out: -fo
+	+ Help Menu: -help
++ Convert risk data structure to low, moderate or high
++ Convert percentage construct of (***) to > 1000%
++ Added help menu
