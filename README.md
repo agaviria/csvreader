@@ -1,5 +1,9 @@
 CSVRead
 =======
+
+[![wercker status](https://app.wercker.com/status/c7ee32c8f51ee0f9f68690486699256a "wercker status")](https://app.wercker.com/project/bykey/c7ee32c8f51ee0f9f68690486699256a)
+
+
 Reads a CSV file, parses rows in memory, creates a markdown template
 
 [Documentation online](http://godoc.org/github.com/agaviria/csvreader)
