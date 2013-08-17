@@ -13,6 +13,7 @@ import (
 	"time"
 )
 
+// Amounts handles all the numerical values of csvdata
 type Amounts struct {
 	EstimatedAmount float64
 	ActualAmount    float64
@@ -20,6 +21,7 @@ type Amounts struct {
 	EstimatedTxn    string
 }
 
+// Account holds the representing values for each row of csvdata
 type Account struct {
 	Num  string
 	Name string
@@ -33,6 +35,7 @@ type alertTemplateData struct {
 	Account *Account
 }
 
+// IsValidAlert checks if the account alert is valid or a false positive
 func (a *Account) IsValidAlert() bool {
 	if a.In.IsValidAlert() || a.Out.IsValidAlert() {
 		return true
@@ -40,8 +43,8 @@ func (a *Account) IsValidAlert() bool {
 	return false
 }
 
+// IsValidAlert *Amounts removes any alerts considered false-positive from printable template
 func (a *Amounts) IsValidAlert() bool {
-	// Removes false-positive alerts from printable template
 	// e.g. -275%
 	if strings.Count(a.Percent, "-") != 0 {
 		return false
@@ -49,7 +52,7 @@ func (a *Amounts) IsValidAlert() bool {
 	return true
 }
 
-// Returns actual amount of funds in a monthly cycle vs. declared profile
+// ClientActualAmount returns actual amount of funds in a monthly cycle vs. declared profile
 func (a *Amounts) ClientActualAmount() float64 {
 	return a.ActualAmount - a.EstimatedAmount
 }
